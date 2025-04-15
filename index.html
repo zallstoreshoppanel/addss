@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wanzofc black</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2980b9, #6dd5fa, #ffffff); /* Softer gradient */
+      background-size: 300% 300%; /* Adjust size for smoother animation */
+      animation: gradient 12s ease infinite;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333; /* Darker text color */
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      text-align: center;
+      padding: 30px; /* Increased padding */
+      background: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+      border-radius: 20px; /* Rounded corners */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+      width: 80%;  /* Wider container */
+      max-width: 600px; /*  Maximum width */
+    }
+
+    h1 {
+      font-size: 2.8em;
+      margin-bottom: 25px; /* Increased spacing */
+      font-family: 'Roboto', sans-serif;
+      color: #3498db; /* A modern, attractive color */
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="file"], select {
+      padding: 12px;
+      font-size: 1.1em;
+      margin: 18px 0; /* Increased spacing */
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9; /* Light background */
+      transition: border-color 0.3s ease;
+      width: 90%; /* Slightly wider */
+      max-width: 400px; /*  Maximum width */
+    }
+
+    input[type="file"]:focus, select:focus {
+      border-color: #3498db; /* Focus style */
+      outline: none; /* Remove the default focus outline */
+    }
+
+    button {
+      padding: 16px 35px; /* Adjusted padding */
+      font-size: 1.3em;
+      background: #2ecc71; /* A green button */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow */
+    }
+
+    button:hover {
+      background: #27ae60;
+      transform: scale(1.05); /* Slight scale on hover */
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .output {
+      margin-top: 30px; /* Increased spacing */
+    }
+
+    .output img {
+      width: 100%;
+      max-width: 500px; /* Increased max-width */
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px; /* Spacing below the image */
+    }
+
+    .fab, .fas {
+      margin-right: 8px; /* Reduced spacing */
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      background-color: #f3f3f3; /* Light gray background */
+      border-radius: 10px;
+      margin-top: 15px;
+      overflow: hidden; /* To contain the progress bar */
+    }
+
+    .progress-bar {
+      height: 20px;
+      background-color: #3498db; /* Progress bar color */
+      width: 0%; /* Initial width: 0% */
+      transition: width 0.4s ease-in-out; /* Smooth transition */
+      border-radius: 10px;
+      text-align: center;
+      color: white;
+      font-size: 0.9em;
+      line-height: 20px; /* Vertically center the text */
+    }
+
+    .download-button {
+      display: inline-block;
+      padding: 12px 25px;
+      font-size: 1.2em;
+      background-color: #3498db; /* Download button color */
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .download-button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><i class="fas fa-image"></i> wanzofc black</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="image" required />
+      <br>
+      <select name="filter" required>
+        <option value="hitam">Hitam</option>
+        <option value="coklat">Coklat</option>
+        <option value="nerd">Nerd</option>
+        <option value="piggy">Piggy</option>
+        <option value="carbon">Carbon</option>
+        <option value="botak">Botak</option>
+      </select>
+      <br>
+      <button type="submit"><i class="fas fa-upload"></i> Upload & Proses</button>
+    </form>
+
+    <div class="progress-bar-container" id="progressBarContainer" style="display: none;">
+      <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+    <div class="output" id="output"></div>
+  </div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const progressBarContainer = document.getElementById('progressBarContainer');
+      const progressBar = document.getElementById('progressBar');
+      const outputDiv = document.getElementById('output');
+
+      // Show progress bar
+      progressBarContainer.style.display = 'block';
+      progressBar.style.width = '0%'; // Reset progress
+      progressBar.textContent = '0%';
+
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData,
+          // Add this to the fetch call to track progress.  Not actually supported, but a placeholder.
+          onUploadProgress: (progressEvent) => {
+            // Simulated progress:
+            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            progressBar.style.width = `${percentCompleted}%`;
+            progressBar.textContent = `${percentCompleted}%`;
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        // Hide the progress bar and update the output
+        progressBarContainer.style.display = 'none';
+
+        outputDiv.innerHTML = `
+          <p>Gambar berhasil diproses!</p>
+          <img src="${result.imageUrl}" alt="Hitam Image" />
+          <a href="${result.imageUrl}" class="download-button" download><i class="fas fa-download"></i> Download</a>
+        `;
+
+      } catch (error) {
+        // Hide progress bar on error
+        progressBarContainer.style.display = 'none';
+        outputDiv.innerHTML = `<p>Error: ${error.message || 'Terjadi kesalahan saat memproses gambar.'}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
